@@ -454,12 +454,12 @@ const unsigned char *open_mouth_animation[] = {
 
 const unsigned char *blink_animation[] = {
     vegetal_monster_blink1_bmp,
-    vegetal_monster_blink2_bmp,
+    // vegetal_monster_blink2_bmp,
     vegetal_monster_blink3_bmp,
     vegetal_monster_blink3_bmp,
+    // vegetal_monster_blink3_bmp,
     vegetal_monster_blink3_bmp,
-    vegetal_monster_blink3_bmp,
-    vegetal_monster_blink2_bmp,
+    // vegetal_monster_blink2_bmp,
     vegetal_monster_blink1_bmp,
     vegetal_monster_bmp,
 };
@@ -591,9 +591,16 @@ void idle(bool talk, bool is_okay)
     current_monster_frame = current_frame % (int)(sizeof(open_mouth_animation) / sizeof(unsigned char *));
   }
 
-  display.fillRect(offset_x + current_x_offset, offset_y, 63, 64, SSD1306_BLACK);
-  display.drawBitmap(offset_x + current_x_offset, offset_y, open_mouth_animation[current_monster_frame], 63, 64, SSD1306_WHITE);
-
+  if (current_frame % ((int)(sizeof(open_mouth_animation) / sizeof(unsigned char *)) * 16) >= (int)(sizeof(open_mouth_animation) / sizeof(unsigned char *)) * 15)
+  {
+    display.fillRect(offset_x + current_x_offset, offset_y, 63, 64, SSD1306_BLACK);
+    display.drawBitmap(offset_x + current_x_offset, offset_y, blink_animation[current_frame % (int)(sizeof(open_mouth_animation) / sizeof(unsigned char *))], 63, 64, SSD1306_WHITE);
+  }
+  else
+  {
+    display.fillRect(offset_x + current_x_offset, offset_y, 63, 64, SSD1306_BLACK);
+    display.drawBitmap(offset_x + current_x_offset, offset_y, open_mouth_animation[current_monster_frame], 63, 64, SSD1306_WHITE);
+  }
   if (true)
   {
     display.fillRect(heart_x + current_x_offset - 1, heart_y, 18, 16, SSD1306_BLACK);
@@ -638,7 +645,6 @@ void idle(bool talk, bool is_okay)
     }
     talk_frame++;
   }
-
 
   if (talk == true && current_x_offset != left_offset)
   {
@@ -685,7 +691,7 @@ void loop()
   static uint32_t i = 0;
 
   idle(i % 200 < 100, i % 400 < 200);
-  display.setCursor(100, 52);     // Start at top-left corner
+  display.setCursor(100, 52); // Start at top-left corner
   display.fillRoundRect(94, 49, 35, 13, 3, SSD1306_BLACK);
   display.fillRoundRect(95, 50, 33, 11, 3, SSD1306_WHITE);
   display.setTextColor(BLACK); // Draw white text

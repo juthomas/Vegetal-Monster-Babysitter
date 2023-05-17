@@ -572,7 +572,7 @@ void print_partial_text(char *text, int characters)
   }
 }
 
-void idle_ok(bool talk, bool is_okay)
+void idle(bool talk, bool is_okay)
 {
   const int middle_offset = 0;
   const int left_offset = -32;
@@ -588,9 +588,6 @@ void idle_ok(bool talk, bool is_okay)
   display.clearDisplay();
   if (current_frame % ((int)(sizeof(open_mouth_animation) / sizeof(unsigned char *)) * 4) < (int)(sizeof(open_mouth_animation) / sizeof(unsigned char *)) * 3)
   {
-    // display.clearDisplay();
-    // display.fillRect(offset_x + current_x_offset, offset_y, 63, 64, SSD1306_BLACK);
-    // display.drawBitmap(offset_x + current_x_offset, offset_y , open_mouth_animation[current_frame % (int)(sizeof(open_mouth_animation) / sizeof(unsigned char *))], 63, 64, SSD1306_WHITE);
     current_monster_frame = current_frame % (int)(sizeof(open_mouth_animation) / sizeof(unsigned char *));
   }
 
@@ -599,7 +596,6 @@ void idle_ok(bool talk, bool is_okay)
 
   if (true)
   {
-    // display.clearDisplay();
     display.fillRect(heart_x + current_x_offset - 1, heart_y, 18, 16, SSD1306_BLACK);
 
     if (is_okay)
@@ -643,7 +639,6 @@ void idle_ok(bool talk, bool is_okay)
     talk_frame++;
   }
 
-  display.display();
 
   if (talk == true && current_x_offset != left_offset)
   {
@@ -660,7 +655,6 @@ void idle_ok(bool talk, bool is_okay)
   current_frame++;
   // if (current_frame > (int)(sizeof(open_mouth_animation) / sizeof(unsigned char *)) * 4)
   //   current_frame = 0;
-  delay(100);
 }
 
 void setup()
@@ -690,7 +684,15 @@ void loop()
 {
   static uint32_t i = 0;
 
-  idle_ok(i % 200 < 100, i % 400 < 200);
+  idle(i % 200 < 100, i % 400 < 200);
+  display.setCursor(100, 52);     // Start at top-left corner
+  display.fillRoundRect(94, 49, 35, 13, 3, SSD1306_BLACK);
+  display.fillRoundRect(95, 50, 33, 11, 3, SSD1306_WHITE);
+  display.setTextColor(BLACK); // Draw white text
+  display.printf("%04d", analogRead(A0));
+  display.display();
+  delay(100);
+
   i++;
   // put your main code here, to run repeatedly:
 }

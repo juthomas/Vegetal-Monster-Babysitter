@@ -638,9 +638,9 @@ void idle(bool talk, bool is_okay)
     }
     else
     {
-      display.setCursor(58, 10);
+      display.setCursor(58, 12);
       print_partial_text("Je vais", talk_frame);
-      display.setCursor(58, 22);
+      display.setCursor(58, 24);
       print_partial_text("mourir...", talk_frame - 8);
     }
     talk_frame++;
